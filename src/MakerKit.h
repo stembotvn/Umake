@@ -31,7 +31,7 @@ NEGENDO Education
 #include "stdint.h"
 
 #include "Scratch.h"
-#include "DHT.h"
+//#include "DHT.h"
 #include "Servo.h"
 
 //#define DEBUG 1

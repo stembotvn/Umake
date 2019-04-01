@@ -227,10 +227,10 @@
 			"Temperature pin: %d.pin ","getTemperature","D2",
 		    {
 			    "encode":"{d0}",
-			    "setup":"",
-			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
-			    "def":"MakerKit Maker;\n",
-			    "work":"Maker.getTemperature({0})",
+			    "setup":"dht.begin();\n",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n#include \"DHT.h\"\n",
+			    "def":"DHT dht({0},DHT11);\n",
+			    "work":"dht.readTemperature()",
 			    "loop":""
             }
         ],

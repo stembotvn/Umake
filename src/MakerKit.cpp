@@ -98,17 +98,17 @@ int MakerKit::getPotentiomenterLocation(int pin)
 }
 float MakerKit::getTemperature(int pin)
 {
-    DHT dht = DHT(pin, DHT11);
-    dht.begin();
-    float t = dht.readTemperature();
-    return t;
+    //DHT dht = DHT(pin, DHT11);
+    //dht.begin();
+    //float t = dht.readTemperature();
+    //return t;
 }
 float MakerKit::getHumidity(int pin)
 {
-    DHT dht = DHT(pin, DHT11);
-    dht.begin();
-    float h = dht.readHumidity();
-    return h;
+    //DHT dht = DHT(pin, DHT11);
+    //dht.begin();
+    //float h = dht.readHumidity();
+    //return h;
 }
 void MakerKit::stopM1()
 {
