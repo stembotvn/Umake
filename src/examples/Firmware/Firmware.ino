@@ -1,11 +1,11 @@
 #include "MakerKit.h"
 
-MakerKit Maker;
+MakerKit Umake;
 
 void setup() {
   Serial.begin(115200);
 }
 
 void loop() {
-  Maker.run();
+  Umake.run();
 }

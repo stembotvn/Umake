@@ -1,5 +1,5 @@
-{	"extensionName": "Maker Kit NEGENDO",
-    "description": "maker Kit NEGENDO Scratch",
+{	"extensionName": "Umake NEGENDO",
+    "description": "Umake Kit NEGENDO Scratch",
 	"version": "1.0.0",
 	"author": "NEGENDO",
 	"homepage": "https://negendo.com",
@@ -9,7 +9,7 @@
 	"extensionPort": 0,
     "blockSpecs": [
         ["h",
-            "Maker Kit Program","runArduino",
+            "Umake Program","runArduino",
 			{
                 "setup":"",
 			    "inc": "",
@@ -25,9 +25,9 @@
 			    "encode":"",
 			    "setup":"Serial.begin(115200);\n",
 			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
-			    "def":"MakerKit Maker;\n",
+			    "def":"MakerKit Umake;\n",
 			    "work":"",
-			    "loop":"Maker.run();\n"
+			    "loop":"Umake.run();\n"
             }
         ],
 
@@ -37,8 +37,8 @@
 			    "encode":"{d0}{d1}",
 			    "setup":"",
 			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
-			    "def":"MakerKit Maker;\n",
-			    "work":"Maker.setMotor({0},{1});\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.setMotor({0},{1});\n",
 			    "loop":""
             }
         ],
@@ -49,8 +49,8 @@
 			    "encode":"{d0}",
 			    "setup":"",
 			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
-			    "def":"MakerKit Maker;\n",
-			    "work":"Maker.stopMotor({0});\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.stopMotor({0});\n",
 			    "loop":""
             }
         ],
@@ -61,8 +61,8 @@
 			    "encode":"{d0}{d1}",
 			    "setup":"",
 			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
-			    "def":"MakerKit Maker;\n",
-			    "work":"Maker.relay({0},{1});\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.relay({0},{1});\n",
 			    "loop":""
             }
         ],
@@ -73,32 +73,44 @@
 			    "encode":"{d0}{d1}",
 			    "setup":"",
 			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
-			    "def":"MakerKit Maker;\n",
-			    "work":"Maker.setLED({0},{1});\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.setLED({0},{1});\n",
 			    "loop":""
             }
         ],
 
         ["w", 
-			"Set Servo pin %d.servo\ angle: %n \n ","setServo","D10","90",
+			"Set Servo pin %d.servo\ angle: %n \n ","setServo","D2","90",
 		    {
 			    "encode":"{d0}{d1}",
 			    "setup":"",
 			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
-			    "def":"MakerKit Maker;\n",
-			    "work":"Maker.setServo({0},{1});\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.setServo({0},{1});\n",
 			    "loop":""
             }
         ],
 
         ["w", 
-			"Disable Servo pin %d.servo\n ","disableServo","D10",
+			"Disable Servo pin %d.servo\n ","disableServo","D2",
 		    {
 			    "encode":"{d0}",
 			    "setup":"",
 			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
-			    "def":"MakerKit Maker;\nServo servo_{0};\n",
-			    "work":"servo_{0}.detach();\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.disableServo({0})\n",
+			    "loop":""
+            }
+        ],
+
+		["w", 
+			"Set PWM pin %d.PWMpin\ value: %n \n ","setPWM","D3","100",
+		    {
+			    "encode":"{d0}{d1}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.setPWM({0},{1});\n",
 			    "loop":""
             }
         ],
@@ -109,8 +121,8 @@
 			    "encode":"{d0}",
 			    "setup":"",
 			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
-			    "def":"MakerKit Maker;\n",
-			    "work":"Maker.buttonPressed({0})",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.buttonPressed({0})",
 			    "loop":""
             }
         ],
@@ -121,8 +133,8 @@
 			    "encode":"{d0}",
 			    "setup":"",
 			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
-			    "def":"MakerKit Maker;\n",
-			    "work":"Maker.readMicroswitch({0})",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.readMicroswitch({0})",
 			    "loop":""
             }
         ],
@@ -133,8 +145,8 @@
 			    "encode":"{d0}",
 			    "setup":"",
 			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
-			    "def":"MakerKit Maker;\n",
-			    "work":"Maker.readTouch({0})",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.readTouch({0})",
 			    "loop":""
             }
         ],
@@ -145,8 +157,8 @@
 			    "encode":"{d0}",
 			    "setup":"",
 			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
-			    "def":"MakerKit Maker;\n",
-			    "work":"Maker.readVibration({0})",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.readVibration({0})",
 			    "loop":""
             }
         ],
@@ -157,8 +169,8 @@
 			    "encode":"{d0}",
 			    "setup":"",
 			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
-			    "def":"MakerKit Maker;\n",
-			    "work":"Maker.getGasSensor({0})",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.getGasSensor({0})",
 			    "loop":""
             }
         ],
@@ -169,8 +181,8 @@
 			    "encode":"{d0}",
 			    "setup":"",
 			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
-			    "def":"MakerKit Maker;\n",
-			    "work":"Maker.getSound({0})",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.getSound({0})",
 			    "loop":""
             }
         ],
@@ -181,8 +193,8 @@
 			    "encode":"{d0}",
 			    "setup":"",
 			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
-			    "def":"MakerKit Maker;\n",
-			    "work":"Maker.getLight({0})",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.getLight({0})",
 			    "loop":""
             }
         ],
@@ -193,8 +205,8 @@
 			    "encode":"{d0}",
 			    "setup":"",
 			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
-			    "def":"MakerKit Maker;\n",
-			    "work":"Maker.getSoilMoisture({0})",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.getSoilMoisture({0})",
 			    "loop":""
             }
         ],
@@ -205,8 +217,8 @@
 			    "encode":"{d0}",
 			    "setup":"",
 			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
-			    "def":"MakerKit Maker;\n",
-			    "work":"Maker.getPotentiomenterLocation({0})",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.getPotentiomenterLocation({0})",
 			    "loop":""
             }
         ],
@@ -217,8 +229,8 @@
 			    "encode":"{d0}",
 			    "setup":"",
 			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
-			    "def":"MakerKit Maker;\n",
-			    "work":"Maker.getAcceleromenterValue({0})",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.getAcceleromenterValue({0})",
 			    "loop":""
             }
         ],
@@ -227,10 +239,10 @@
 			"Temperature pin: %d.pin ","getTemperature","D2",
 		    {
 			    "encode":"{d0}",
-			    "setup":"dht.begin();\n",
-			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n#include \"DHT.h\"\n",
-			    "def":"DHT dht({0},DHT11);\n",
-			    "work":"dht.readTemperature()",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.getTemperature({0})",
 			    "loop":""
             }
         ],
@@ -238,10 +250,10 @@
 			"Humidity pin: %d.pin ","getHumidity","D2",
 		    {
 			    "encode":"{d0}",
-			    "setup":"dht.begin();\n",
-			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n#include \"DHT.h\"\n",
-			    "def":"DHT dht({0},DHT11);\n",
-			    "work":"dht.readHumidity()",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.getHumidity({0})",
 			    "loop":""
             }
         ],
@@ -277,7 +289,8 @@
         "status":["ON","OFF"],
 		"row":["LINE1","LINE2"],
         "servo":["D2","D3","D4","D5","D6","D7","D8","D9","D10","D11","D12"],
-		"pinA":["A0","A1","A2","A3"]
+		"pinA":["A0","A1","A2","A3"],
+		"PWMpin":["D3","D5","D6","D9","D10","D11"]
 	},
 
     "values":{

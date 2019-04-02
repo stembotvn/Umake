@@ -49,7 +49,7 @@ Define of ID function for Scratch interface
 #define LCD_PRINT 66
 #define LCD_CLEAR 67
 ///////GET////////
-#define BUTTON 70
+#define BUTTONS 70
 #define SWITCH 71
 #define TOUCH 72
 #define VIBRATION 73
@@ -61,6 +61,7 @@ Define of ID function for Scratch interface
 #define ACCELEROMENTER 79
 #define TEMPERATURE 80
 #define HUMIDITY 81
+#define S_PWM 82
 
 
 ///////////////////////

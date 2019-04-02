@@ -6,17 +6,18 @@ written by Adafruit Industries
 
 #include "DHT.h"
 
-DHT::DHT(uint8_t pin, uint8_t type) {
-  _pin = pin;
+DHT::DHT(uint8_t type) {
   _type = type;
   firstreading = true;
+  _lastreadtime = 0;
+
 }
 
-void DHT::begin(void) {
+void DHT::begin(uint8_t pin) {
   // set up the pins!
+  _pin = pin;
   pinMode(_pin, INPUT);
   digitalWrite(_pin, HIGH);
-  _lastreadtime = 0;
 }
 
 //boolean S == Scale.  True == Farenheit; False == Celcius

@@ -98,17 +98,15 @@ int MakerKit::getPotentiomenterLocation(int pin)
 }
 float MakerKit::getTemperature(int pin)
 {
-    //DHT dht = DHT(pin, DHT11);
-    //dht.begin();
-    //float t = dht.readTemperature();
-    //return t;
+    DHTsensor.begin(pin);
+    float t = DHTsensor.readTemperature();
+    return t;
 }
 float MakerKit::getHumidity(int pin)
 {
-    //DHT dht = DHT(pin, DHT11);
-    //dht.begin();
-    //float h = dht.readHumidity();
-    //return h;
+    DHTsensor.begin(pin);
+    float h = DHTsensor.readHumidity();
+    return h;
 }
 void MakerKit::stopM1()
 {
@@ -267,6 +265,12 @@ void MakerKit::disableServo(int pin)
             break;
     }
 }
+void MakerKit::setPWM(int pin, int value)
+{
+    pinMode(pin, OUTPUT);
+    int values = map(value,0,100,0,255);
+    analogWrite(pin, values);
+}
 /////////////////////////////////////
 
 void MakerKit::run()
@@ -367,10 +371,10 @@ void MakerKit::parseData()
                 Serial.print("Mode is GET DEVICE: ");
                 Serial.println(device);
             #endif
-         //   if(device != ULTRASONIC_SENSOR){
+            //   if(device != ULTRASONIC_SENSOR){
                 writeHead();
                 writeBuffer(ind++,idx);
-         //   }
+            //   }
             
             readSensors(device);
             writeEnd();
@@ -461,6 +465,12 @@ void MakerKit::runFunction(int device)
             disableServo(pin);
             break;
         }
+        case S_PWM:{
+            int pin = readShort(6);
+            int value = readShort(8);
+            setPWM(pin, value);
+            break;
+        }
         case LCD_PRINT:{
             int line = readShort(6);
             int pos = readShort(8);
@@ -484,7 +494,7 @@ void MakerKit::readSensors(int device)
     float value = 0.0;
     int pin = readBuffer(6);
     switch (device){
-        case BUTTON:{
+        case BUTTONS:{
            uint8_t pin = readBuffer(6);
            sendByte((byte)buttonPressed(pin));
         }

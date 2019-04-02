@@ -32,6 +32,9 @@
     ext.disableServo = function(p){
         runPackage(65,short2array(typeof p=="number"?p:pin[p]));
     };
+    ext.setPWM = function(p,value){
+        runPackage(82,short2array(typeof p=="number"?p:pin[p]),short2array(value));
+    };
     //ext.LCDprint = function(rows,pos,strings){
     //    runPackage(66,short2array(typeof rows=="number"?rows:row[rows]),short2array(pos),)
     //};

@@ -1,7 +1,7 @@
 /*
 https://negendo.com
 
-Project: Maker Kit for education
+Project: Umake Kit for education
 Hardware: Arduino Uno R3 + Maker shield Uno made by NEGENDO
     Sensor:
         1 - Temperature Humidity sensor - DHT11
@@ -31,14 +31,12 @@ NEGENDO Education
 #include "stdint.h"
 
 #include "Scratch.h"
-//#include "DHT.h"
+#include "DHT.h"
 #include "Servo.h"
 
 //#define DEBUG 1
 //#define DEBUG_SERIAL 1
 
-//#define DHTTYPE DHT11
-//#define DHTPIN 2
 #define M1A 3
 #define M1B 5
 #define M2A 6
@@ -75,6 +73,7 @@ public:
     int getLight(int pin);
     int getAcceleromenterValue(int axis);
     int getPotentiomenterLocation(int pin);
+    void setPWM(int pin, int value);
     //////////////////////////////////////////
 
     void run();
@@ -84,6 +83,7 @@ public:
 
 private:
 
+    DHT DHTsensor = DHT(DHT11);
     Servo servo2;
     Servo servo3;
     Servo servo4;
