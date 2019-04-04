@@ -1,6 +1,6 @@
 {	"extensionName": "Umake NEGENDO",
     "description": "Umake Kit NEGENDO Scratch",
-	"version": "1.0.1",
+	"version": "1.0.0",
 	"author": "NEGENDO",
 	"homepage": "https://negendo.com",
 	"sort": 0,
@@ -20,7 +20,7 @@
         ],
 
 		["w", 
-			"Scratch firmware","firmware",
+			"Firmware","firmware",
 		    {
 			    "encode":"",
 			    "setup":"Serial.begin(115200);\n",
