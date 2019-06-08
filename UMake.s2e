@@ -1,0 +1,435 @@
+{	"extensionName": "Umake NEGENDO",
+    "description": "UMake STEM kit",
+	"version": "1.0.5",
+	"author": "NEGENDO",
+	"homepage": "https://negendo.com",
+	"sort": 0,
+	"javascriptURL": "js/UMake.js",
+	"firmware": "1.0",
+	"extensionPort": 0,
+    "blockSpecs": [
+        ["h",
+            "Umake Program","runArduino",
+			{
+                "setup":"",
+			    "inc": "",
+			    "def":"",
+			    "work":"",
+			    "loop":""
+			}
+        ],
+
+		["w", 
+			"Scratch firmware","firmware",
+		    {
+			    "encode":"",
+			    "setup":"Serial.begin(115200);\n",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"",
+			    "loop":"Umake.run();\n"
+            }
+        ],
+             
+        ["w", 
+			"Set motor: %d.motor speed: %n \%","setMotor","M1","100",
+		    {
+			    "encode":"{d0}{d1}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.setMotor({0},{1});\n",
+			    "loop":""
+            }
+        ],
+        
+        ["w", 
+			"Stop motor: %d.motor","stopMotor","M1",
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.stopMotor({0});\n",
+			    "loop":""
+            }
+        ],      
+
+        ["w", 
+        "set digital %d.pin output as %d.digital",
+        "runDigital", "D4", "HIGH",
+		{"encode":"{d0}{d1}",
+		"setup":"pinMode({0},OUTPUT);\n",
+		"inc":"","def":"","work":"digitalWrite({0},{1});\n","loop":""}
+		],   
+
+		["w", 
+			"Set relay pin %d.pin status: %d.status","setRelay","D2","ON",
+		    {
+			    "encode":"{d0}{d1}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.relay({0},{1});\n",
+			    "loop":""
+            }
+        ],
+
+         ["w", 
+			"Set LED pin %d.pin status: %d.status  ","setLED","D2","ON",
+		    {
+			    "encode":"{d0}{d1}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.setLED({0},{1});\n",
+			    "loop":""
+            }
+        ],
+
+        ["w", 
+			"Set Servo pin %d.servo angle: %n ","setServo","D2","90",
+		    {
+			    "encode":"{d0}{d1}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.setServo({0},{1});\n",
+			    "loop":""
+            }
+        ],
+
+        ["w", 
+			"Disable Servo pin %d.servo","disableServo","D2",
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.disableServo({0})\n",
+			    "loop":""
+            }
+        ],
+
+        ["w", 
+			"Set PWM pin %d.PWMpin value: %n ","setPWM","D3","100",
+		    {
+			    "encode":"{d0}{d1}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.setPWM({0},{1});\n",
+			    "loop":""
+            }
+        ],
+               
+        ["w",
+		    "Set RGB LED Color at pin %d.pins (Red: %n   Green: %n  Blue: %n )", "setColor","D7", 255, 0, 0,
+		    {
+                "encode":"{d0}{d1}{d2}{d3}",
+                "setup":"",
+		        "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.setColor({0},{1},{2},{3});\n",
+		        "loop":""
+            }
+        ],
+
+        ["w",
+		    "Set RGB LED Strip at pin %d.pins LEDs total %n  at location %d.LEDindex (Red: %n   Green: %n  Blue: %n )","setStrip","D7",8,1,  255, 0, 0,
+		    {
+                "encode":"{d0}{d1}{d2}{d3}{d4}{d5}",
+                "setup":"",
+		        "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.setStrip({0},{1},{2},{3},{d4},{d5});\n",
+		        "loop":""
+            }
+        ],
+
+        ["w", 
+        "play Note pin %d.pin on note %d.notes beat %d.beats","playNote", "7", "C4","Half",
+		{"encode":"{d0}{s1}{s2}",
+		"setup":"",
+		"inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+		"def":"MakerKit Umake;\n",
+		"work":"Umake.Sound._playnote({0},{1},{2}); \n",
+		"loop":""}],
+
+		
+        ["w",
+    		"LCD Print at %d.row Pos %n/ :  %s ", "LCDprint", "LINE1","0"," ",
+        	{
+        		"setup":"lcd.begin();\nlcd.backlight();\n",
+        		"inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n#include \"LiquidCrystal_I2C.h\"\n",
+        		"def":"LiquidCrystal_I2C lcd(0x27, 16, 2);\n",
+        		"work":"lcd.setCursor({1},{0});\nlcd.print({2});\nlcd.print(\" \");\n",
+        		"loop":""
+			}
+    	],
+
+		["w",
+			"LCD clear","LCDclear",
+			{
+				"setup":"lcd.begin();\nlcd.backlight();\n",
+        		"inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n#include \"LiquidCrystal_I2C.h\"\n",
+        		"def":"LiquidCrystal_I2C lcd(0x27, 16, 2);\n",
+				"work":"lcd.clear();\n",
+				"loop":""
+			}
+		
+
+    ],
+   		["-"],
+        ["-"],
+
+        ["R", "read analog pin (A)%n","getAnalog","0",
+		{"encode":"{d0}","setup":"pinMode(A0+{0},INPUT);\n","inc":"","def":"","work":"analogRead(A0+{0})","loop":""}],
+
+        ["R", 
+			"Get IR Distance pin: %d.pinA ","getIRdistance","A0",
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.readIRdistance({0})",
+			    "loop":""
+            }
+        ], 
+
+         ["R", 
+			"Get Ultrasonic Distance TRIG pin: %d.pin  ECHO pin: %d.pin ","getUSdistance",7,8,
+		    {
+			    "encode":"{d0}{d1}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.getUSdistance({0},{1})",
+			    "loop":""
+            }
+        ], 
+          
+       ["R", 
+			"Get Sound sensor pin: %d.pinA ","getSound","A0",
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.getSound({0})",
+			    "loop":""
+            }
+        ],
+
+        ["R", 
+			"Get Light sensor pin: %d.pinA ","getLight","A0",
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.getLight({0})",
+			    "loop":""
+            }
+        ],
+
+        ["R", 
+			"Get Soil Moisture sensor pin: %d.pinA ","getSoilMoisture","A0",
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.getSoilMoisture({0})",
+			    "loop":""
+            }
+        ],
+
+
+        ["R", 
+			"Get Potentiometer sensor pin: %d.pinA ","getPotentiometer","A0",
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.getPotentiomenterLocation({0})",
+			    "loop":""
+            }
+        ], 
+
+        ["R", 
+			"Get Acceleromenter value axis: %d.axis ","getAcceleromenterValue","X",
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.getAcceleromenterValue({0})",
+			    "loop":""
+            }
+        ],
+
+
+        ["R", 
+			"Get Gas sensor pin: %d.pinA ","getGasSensor","A0",
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.getGasSensor({0})",
+			    "loop":""
+            }
+        ],
+
+        ["R", 
+			"Temperature pin: %d.pin ","getTemperature","D2",
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.getTemperature({0})",
+			    "loop":""
+            }
+        ],
+        ["R", 
+			"Humidity pin: %d.pin ","getHumidity","D2",
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.getHumidity({0})",
+			    "loop":""
+            }
+        ],
+
+        
+        ["-"],
+        ["-"],
+
+        ["B", "read digital pin %n","getDigital","2",
+		{"encode":"{d0}","setup":"pinMode({0},INPUT);\n","inc":"","def":"","work":"digitalRead({0})","loop":""}],
+		
+
+
+        ["B", 
+			"Button pressed pin: %d.pin ","buttonPressed","D2",
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.buttonPressed({0})",
+			    "loop":""
+            }
+        ],
+
+        ["B", 
+			"limit switch pressed pin: %d.pin ","readMicroswitch","D2",
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.readMicroswitch({0})",
+			    "loop":""
+            }
+        ],
+
+        ["B", 
+			"Touch pin: %d.pin ","readTouch","D2",
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.readTouch({0})",
+			    "loop":""
+            }
+        ],
+
+        ["B", 
+			"Vibration pin: %d.pin ","readVibration","D2",
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.readVibration({0})",
+			    "loop":""
+            }
+        ],
+         ["-"],
+        ["-"],
+
+		["R", "Bluetooth available bytes", "BluetoothAvailable",
+		{"setup":"Serial.begin(9600);\n","inc":"","def":"","work":"Serial.available()","loop":""}],
+		
+		["R", "Bluetooth read byte", "BluetoothRead",
+		{"setup":"Serial.begin(9600);\n","inc":"","def":"","work":"Serial.read()","loop":""}],
+
+		["R", 
+			"Read IRremote at pin: %d.pin ","getIRremote","D2",
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.readIRremote({0})",
+			    "loop":""
+            }
+        ]
+		
+		],
+
+    "menus": {
+		"pin":["D2","D3","D4","D5","D6","D7","D8","D9","D10","D11","D12","A0","A1","A2","A3"],
+		"axis":["X","Y","Z"],
+		"digital":["HIGH","LOW"],
+        "motor":["M1","M2"],
+        "status":["ON","OFF"],
+		"row":["LINE1","LINE2"],
+        "servo":["D2","D3","D4","D5","D6","D7","D8","D9","D10","D11","D12"],
+		"pinA":["A0","A1","A2","A3"],
+		"PWMpin":["D3","D5","D6","D9","D10","D11"],
+		"LEDindex":["all",1,2,3,4,5,6,7,8],
+		"notes":["C4","D4","E4","F4","G4","A4","B4","C5","D5","E5","F5","G5","A5","B5","C6"],
+		"beats":["Half","Quarter","Eighth","Whole","Double","Zero"]
+	},
+
+    "values":{
+        "D2":2,
+        "D3":3,
+        "D4":4,
+        "D5":5,
+        "D6":6,
+        "D7":7,
+        "D8":8,
+        "D9":9,
+        "D10":10,
+        "D11":11,
+        "D12":12,
+        "A0":14,
+		"A1":15,
+		"A2":16,
+		"A3":17,
+		"X":0,
+		"Y":1,
+		"Z":2,
+        "M1":1,
+        "M2":0,
+        "ON":1,
+        "OFF":0,
+		"LINE1":0,
+  		"LINE2":1,
+  		"HIGH":1,"LOW":0,
+  		"all":0
+    },
+
+    "translators":{
+	}
+}

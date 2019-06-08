@@ -62,13 +62,29 @@ Define of ID function for Scratch interface
 #define TEMPERATURE 80
 #define HUMIDITY 81
 #define S_PWM 82
-
-
+#define SHARPDIS 83
+#define LINESINGLE 84
 ///////////////////////
 #define RCDATA 90
 #define CHECKCONNECTED 91
 #define DONE 92
+//////////////////////////
+//////////////////////////
+#define IRDISTANCE 100
+#define CENTERLINE 101
+#define RIGHTLINE 102
+#define LEFTLINE 103
 
+////////////////////////
+#define STOP 120
+#define FORWARD 121
+#define BACKWARD 122
+#define TURNLEFT 123
+#define TURNRIGHT 124
+
+#define RGBSTRIP 125
+#define PLAYTONE 126
+/////////////////////////
 
 #define GET 1
 #define RUN 2

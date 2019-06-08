@@ -1,17 +1,26 @@
 (function(ext) {
     var device = null;
     var _rxBuf = [];
-	var pin = {"D2":2,"D3":3,"D4":4,"D5":5,"D6":6,"D7":7,"D8":8,"D9":9,"D10":10,"D11":11,"D12":12,"A0":14,"A1":15,"A2":16,"A3":17};
+    var pin = {"D2":2,"D3":3,"D4":4,"D5":5,"D6":6,"D7":7,"D8":8,"D9":9,"D10":10,"D11":11,"D12":12,"A0":14,"A1":15,"A2":16,"A3":17};
     var axis = {"X":0,"Y":1,"Z":2};
     var motor = {"M1":1,"M2":0};
     var status = {"ON":1,"OFF":0};
     var row = {"LINE1":0,"LINE2":1};
     var servo = {"D2":2,"D3":3,"D4":4,"D5":5,"D6":6,"D7":7,"D8":8,"D9":9,"D10":10,"D11":11,"D12":12};
     var pinA = {"A0":14,"A1":15,"A2":16,"A3":17};
+    var levels = {HIGH:1,LOW:0};
+    var tones ={"C4":262,"D4":294,"E4":330,"F4":349,"G4":392,"A4":440,"B4":494,
+            "C5":523,"D5":587,"E5":659,"F5":698,"G5":784,"A5":880,"B5":988,
+            "C6":1047};
+    var beats = {"Half":500,"Quarter":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0};
+
     ext.resetAll = function(){};
   
     ext.runArduino = function(){
         responseValue();
+    };
+    ext.runDigital = function(pin,level) {
+        runPackage(30,pin,typeof level=="string"?levels[level]:new Number(level));
     };
     //////////////////////////////////////////////
     ext.setMotor = function(M,speed){
@@ -35,12 +44,44 @@
     ext.setPWM = function(p,value){
         runPackage(82,short2array(typeof p=="number"?p:pin[p]),short2array(value));
     };
+    ext.setColor = function(pin,red,green,blue){
+        runPackage(8,pin, red,green,blue);
+    };   
+    ext.setStrip = function(pin,max,location,red,green,blue){
+        runPackage(125,pin,max,ledIndex=="all"?0:ledIndex, red,green,blue);
+    };
+    ext.playNote = function(pin,tone,beat){
+        runPackage(34,pin,short2array(typeof tone=="number"?tone:tones[tone]),short2array(typeof beat=="number"?beat:beats[beat]));
+    };  
+    ext.playTone = function(pin,tone,beat){
+        runPackage(126,pin,short2array(typeof tone=="number"?tone:tones[tone]));
+    };  
     //ext.LCDprint = function(rows,pos,strings){
     //    runPackage(66,short2array(typeof rows=="number"?rows:row[rows]),short2array(pos),)
     //};
     //ext.LCDclear = function(){
     //    runPackage(67);
     //};
+    ext.moveFWD = function(speed) {
+    runPackage(121,speed);
+
+    };
+    ext.moveBWD = function(speed) {
+   runPackage(122,speed);
+
+    };
+     ext.turnL = function(speed) {
+       runPackage(123,speed);
+
+    };
+     ext.turnR= function(speed) {
+     runPackage(124,speed);
+
+    };
+    ext.stopMoving  = function() {
+             runPackage(120);
+
+    }
     //////////////////////////////////////////////
     ext.buttonPressed = function(nextID,p){
         var deviceId = 70;
@@ -90,6 +131,42 @@
         var deviceId = 81;
         getPackage(nextID,deviceId,typeof p=="number"?p:pin[p]);
     };
+    ext.getIRdistance = function(nextID,p){
+        var deviceId = 100;
+        getPackage(nextID,deviceId,typeof p=="number"?p:pinA[p]);
+    };
+    ext.getUSdistance = function(nextID,trig,echo){
+        var deviceId = 36;
+        getPackage(nextID,deviceId,trig,echo);
+    }
+
+     ext.getCenterLine = function(nextID){
+        var deviceId = 101;
+        getPackage(nextID,deviceId);
+    };
+
+      ext.getRightLine = function(nextID){
+        var deviceId = 102;
+        getPackage(nextID,deviceId);
+    };
+      ext.getLeftLine = function(nextID){
+        var deviceId = 103;
+        getPackage(nextID,deviceId);
+    };
+
+    ext.getDigital = function(nextID,pin){
+        var deviceId = 30;
+        getPackage(nextID,deviceId,pin);
+    };
+    ext.getAnalog = function(nextID,pin) {
+        var deviceId = 31;
+        getPackage(nextID,deviceId,pin);
+    };
+    ext.getIRremote = function(nextID,pin){
+        var deviceId = 16;
+        getPackage(nextID,deviceId,pin);
+
+    }
     //////////////////////////////////////////////
     function sendPackage(argList, type){
         var bytes = [0xff, 0x55, 0, 0, type];
@@ -260,5 +337,5 @@
     }
 
     var descriptor = {};
-	ScratchExtensions.register('MakerKit', descriptor, ext, {type: 'serial'});
+    ScratchExtensions.register('MakerKit', descriptor, ext, {type: 'serial'});
 })({});

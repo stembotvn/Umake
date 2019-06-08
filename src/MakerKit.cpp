@@ -108,6 +108,17 @@ float MakerKit::getHumidity(int pin)
     float h = DHTsensor.readHumidity();
     return h;
 }
+float MakerKit::getUSdistance(int trig,int echo)
+{
+    US.begin(trig,echo,3000);
+    return US.Ranging(CM);
+}
+
+
+
+
+
+
 void MakerKit::stopM1()
 {
     pinMode(M1A, OUTPUT);
@@ -166,6 +177,36 @@ void MakerKit::stopMotor(int M)
         stopM1();
     else
         stopM2();
+}
+void MakerKit::moveForward(int speed) //speed in units of %
+{
+    int speedMotor = speed*255/100;
+        runM1(speedMotor);
+        runM2(speedMotor);
+}
+void MakerKit::moveBack(int speed) //speed in units of %
+{
+    int speedMotor = speed*255/100;
+        runM1(-speedMotor);
+        runM2(-speedMotor);
+}
+void MakerKit::turnLeft(int speed) //speed in units of %
+{
+    int speedMotor = speed*255/100;
+        runM1(speedMotor);
+        runM2(-speedMotor);
+}
+////
+void MakerKit::turnRight(int speed) //speed in units of %
+{
+    int speedMotor = speed*255/100;
+        runM1(-speedMotor);
+        runM2(speedMotor);
+}
+void MakerKit::stop() //speed in units of %
+{
+    stopM1();
+    stopM2();
 }
 void MakerKit::setServo(int pin, int angle)
 {
@@ -270,6 +311,82 @@ void MakerKit::setPWM(int pin, int value)
     pinMode(pin, OUTPUT);
     int values = map(value,0,100,0,255);
     analogWrite(pin, values);
+}
+
+int MakerKit::leftSensor()
+{
+    pinMode(lineSensor_enable, OUTPUT);
+    int value;
+    digitalWrite(lineSensor_enable,HIGH);
+    value = analogRead(leftline_pin);
+    digitalWrite(lineSensor_enable, LOW);
+    pinMode(lineSensor_enable, INPUT);
+
+    return value;
+}
+int MakerKit::rightSensor()
+{
+    pinMode(lineSensor_enable, OUTPUT);
+    int value;
+    digitalWrite(lineSensor_enable,HIGH);
+    value = analogRead(rightline_pin);
+    digitalWrite(lineSensor_enable, LOW);
+    pinMode(lineSensor_enable, INPUT);
+
+    return value;
+}
+int MakerKit::centerSensor()
+{
+    pinMode(lineSensor_enable, OUTPUT);
+    int value;
+    digitalWrite(lineSensor_enable, HIGH);
+    value = analogRead(centerline_pin);
+    digitalWrite(lineSensor_enable, LOW);
+    pinMode(lineSensor_enable, INPUT);
+
+    return value;
+}
+
+int MakerKit::readIRdistance(int pin)
+{
+    pinMode(pin,INPUT);
+    int distance = 4800/(analogRead(pin)-20);
+    if(distance > 80) return 81;
+    else if(distance < 10) return 9;
+    else return distance;
+}
+
+void MakerKit::setColor(int pin, byte R, byte G, byte B)
+{
+    R = R > 255 ? 255 : R;
+    G = G > 255 ? 255 : G;
+    B = B > 255 ? 255 : B;
+    RGB.begin(1,pin);
+    RGB.setPixelColor(0, RGB.Color(R,G,B));
+    RGB.show();
+}
+
+void MakerKit::setStrip(int pin, int num,int location, byte R, byte G, byte B){
+    R = R > 255 ? 255 : R;
+    G = G > 255 ? 255 : G;
+    B = B > 255 ? 255 : B;
+    RGB.begin(num,pin);
+    RGB.setPixelColor(location, RGB.Color(R,G,B));
+    RGB.show();
+}
+
+void MakerKit::enableIR(int receiverPin){
+    irrecv.enableIRIn(receiverPin);
+}
+
+long MakerKit::readIR(){
+    if (irrecv.decode(&results))
+    {
+        //Serial.println(results.value, HEX);
+        delay(200);
+        irrecv.resume();
+    }
+    return results.value;
 }
 /////////////////////////////////////
 
@@ -479,9 +596,77 @@ void MakerKit::runFunction(int device)
         }
         case LCD_CLEAR:{
 
-            break;
-        }
-    }
+        } break;
+
+
+        case FORWARD: {
+        int speed = readBuffer(6);
+        moveForward(speed);
+        }break;
+
+        case BACKWARD: {
+        int speed = readBuffer(6);
+        moveBack(speed);
+        }break;
+
+        case TURNLEFT: {
+        int speed = readBuffer(6);
+        turnLeft(speed);
+        }break;
+        case TURNRIGHT: {
+        int speed = readBuffer(6);
+        turnRight(speed);
+        }break; 
+       
+        case STOP:{
+        stop();
+        } break;
+       
+        case DIGITAL:{
+        int pin = readBuffer(6);        
+        pinMode(pin,OUTPUT);
+        int v = readBuffer(7);
+        digitalWrite(pin,v);
+       }
+       break;
+       
+    case RGBLED:{
+     int pin = readBuffer(6);
+      int r = readBuffer(7);
+     int g = readBuffer(8);
+     int b = readBuffer(9);
+     setColor(pin, r,g,b);
+   }
+   break;
+       
+    case RGBSTRIP:{
+     int pin = readBuffer(6);
+     int num = readBuffer(7);
+     int location  = readBuffer(8);
+      int r = readBuffer(9);
+     int g = readBuffer(10);
+     int b = readBuffer(11);
+     setStrip(pin,num,location, r,g,b);
+   }
+   break;
+
+    case PLAYTONE:{
+     //int pin = readBuffer(6);
+   //  int fr  = readShort(7);
+  //   Sound.setPin(pin);
+   //  Sound.generateNote(fr);
+     } break;
+
+    case TONE:{
+     int pin =readShort(6);
+     pinMode(pin,OUTPUT);
+     int hz = readShort(7);
+     int ms = readShort(9);
+     Sound.setPin(pin);
+     Sound._playNote(hz,ms);
+   }
+   break;
+  }
 }
 void MakerKit::readSensors(int device)
 {
@@ -557,7 +742,56 @@ void MakerKit::readSensors(int device)
             sendFloat(actionDone);
         }
         break;
-    }
+        case IRDISTANCE:{
+        uint8_t pin = readBuffer(6);
+        sendShort(readIRdistance(pin)); 
+        }
+        break;
+
+        case CENTERLINE:{
+      //  uint8_t pin = readBuffer(6);
+        sendShort(centerSensor()); 
+        }
+        break;
+
+        case RIGHTLINE:{
+       // uint8_t pin = readBuffer(6);
+        sendShort(rightSensor()); 
+        }
+        break;
+
+        case LEFTLINE:{
+       // uint8_t pin = readBuffer(6);
+        sendShort(leftSensor()); 
+        }
+        break;
+
+       case  DIGITAL:{
+       int pin = readBuffer(6);
+        pinMode(pin,INPUT);
+       sendFloat(digitalRead(pin));
+          }
+        break;
+        case  ANALOG:{
+        int pin = readBuffer(6);
+        pinMode(pin,INPUT);
+         sendFloat(analogRead(pin));
+         }
+         break;
+         
+         case ULTRASONIC_ARDUINO:{
+          int trig = readBuffer(6);
+          int echo = readBuffer(7);
+          sendFloat(getUSdistance(trig,echo));
+
+         }
+         break;
+         case INFRARED:{
+          int pin = readBuffer(6);
+          sendFloat(readIRremote(pin)) ;
+         }
+         break;
+        }
 }
 
 ///////////Private method for data package

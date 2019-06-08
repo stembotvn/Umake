@@ -33,7 +33,10 @@ NEGENDO Education
 #include "Scratch.h"
 #include "DHT.h"
 #include "Servo.h"
-
+#include "Adafruit_NeoPixel.h"
+#include "IRremote.h"
+#include "EasySonar.h"
+#include "NegendoSounds.h"
 //#define DEBUG 1
 //#define DEBUG_SERIAL 1
 
@@ -41,6 +44,11 @@ NEGENDO Education
 #define M1B 5
 #define M2A 6
 #define M2B 11
+
+#define leftline_pin        A2
+#define rightline_pin       A0
+#define centerline_pin      A1	
+#define lineSensor_enable   A3
 
 //////// define State
 #define READ_SERIAL 0 
@@ -57,10 +65,19 @@ public:
     void stopM2();
     void setMotor(int M, int speed);
     void stopMotor(int M);
+    void moveForward(int speed);
+    void moveBack(int speed);
+    void turnRight(int speed);
+    void turnLeft(int speed);
+    void stop();
     void relay(int pin, int status);
     void setLED(int pin, int status);
     void setServo(int pin, int angle);
     void disableServo(int pin);
+    void generateTone(int pin,int fr);
+    void generateNote(int pin,int fr,int duration);
+
+
     bool buttonPressed(int pin);
     bool readMicroswitch(int pin);
     int getGasSensor(int pin);
@@ -73,7 +90,22 @@ public:
     int getLight(int pin);
     int getAcceleromenterValue(int axis);
     int getPotentiomenterLocation(int pin);
+    float getUSdistance(int trig,int ech);
     void setPWM(int pin, int value);
+    
+    int leftSensor();
+    int rightSensor();
+    int centerSensor();
+    int readIRdistance(int pin);
+    void setColor(int pin, byte R, byte G, byte B);
+    void setStrip(int pin,int num,int location, byte R, byte G, byte B);
+    void enableIR(int receiverPin);
+    long readIR();
+    long readIRremote(int pin) {
+        enableIR(pin);
+        return readIR();
+    }
+    int vall();
     //////////////////////////////////////////
 
     void run();
@@ -84,6 +116,11 @@ public:
 private:
 
     DHT DHTsensor = DHT(DHT11);
+    Adafruit_NeoPixel RGB = Adafruit_NeoPixel(NEO_GRB + NEO_KHZ800);
+    IRrecv irrecv;
+    decode_results results;
+    NegendoSounds Sound;
+    EasySonar US;
     Servo servo2;
     Servo servo3;
     Servo servo4;
@@ -95,7 +132,7 @@ private:
     Servo servo10;
     Servo servo11;
     Servo servo12;
-
+    
     int State = 0;
     bool first_run = true;
     bool actionDone = false;
@@ -110,6 +147,7 @@ private:
     unsigned char serial_buf[12]; // writing
     unsigned char serialRead;
     uint8_t command_index = 0;
+    int numLed;
 
     union
     {
