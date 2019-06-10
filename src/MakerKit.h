@@ -132,7 +132,7 @@ private:
     Servo servo10;
     Servo servo11;
     Servo servo12;
-    
+    bool IRenabled = false;
     int State = 0;
     bool first_run = true;
     bool actionDone = false;
@@ -148,6 +148,7 @@ private:
     unsigned char serialRead;
     uint8_t command_index = 0;
     int numLed;
+    int IR_pin; 
 
     union
     {

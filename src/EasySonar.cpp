@@ -49,7 +49,7 @@ long EasySonar::Timing()
   delayMicroseconds(10);
   digitalWrite(Trig_pin, LOW);
   duration = pulseIn(Echo_pin,HIGH,Time_out);
-  //if ( duration == 0 ) duration = Time_out;
+  if ( duration == 0 ) duration = Time_out;
 
   return duration;
 }

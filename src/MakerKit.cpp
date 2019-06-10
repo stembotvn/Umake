@@ -110,7 +110,7 @@ float MakerKit::getHumidity(int pin)
 }
 float MakerKit::getUSdistance(int trig,int echo)
 {
-    US.begin(trig,echo,3000);
+    US.begin(trig,echo,3500);
     return US.Ranging(CM);
 }
 
@@ -371,22 +371,35 @@ void MakerKit::setStrip(int pin, int num,int location, byte R, byte G, byte B){
     G = G > 255 ? 255 : G;
     B = B > 255 ? 255 : B;
     RGB.begin(num,pin);
-    RGB.setPixelColor(location, RGB.Color(R,G,B));
+    if (location>0) RGB.setPixelColor(location-1, RGB.Color(R,G,B));
+    else {
+        for (int i = 0 ; i < num;i++) RGB.setPixelColor(i, RGB.Color(R,G,B));
+    }
     RGB.show();
 }
 
 void MakerKit::enableIR(int receiverPin){
-    irrecv.enableIRIn(receiverPin);
+    if (receiverPin!=IR_pin) IRenabled = false;
+    if (!IRenabled) {
+    IR_pin = receiverPin;
+    irrecv.enableIRIn(IR_pin);
+    IRenabled = true;
+    }
 }
 
 long MakerKit::readIR(){
+    long IRcode; 
     if (irrecv.decode(&results))
     {
         //Serial.println(results.value, HEX);
         delay(200);
         irrecv.resume();
+        IRcode = results.value;
+       // results.value = 0;
+        return IRcode;
+
     }
-    return results.value;
+    else return 0;
 }
 /////////////////////////////////////
 
@@ -788,7 +801,7 @@ void MakerKit::readSensors(int device)
          break;
          case INFRARED:{
           int pin = readBuffer(6);
-          sendFloat(readIRremote(pin)) ;
+          sendDouble(readIRremote(pin)) ;
          }
          break;
         }

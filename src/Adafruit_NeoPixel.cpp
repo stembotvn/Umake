@@ -61,13 +61,18 @@ Adafruit_NeoPixel::~Adafruit_NeoPixel() {
 }
 
 void Adafruit_NeoPixel::begin(uint16_t n,  uint8_t p) {
-  setPin(p);
-  updateLength(n);
+    
+  if (pin!=p || n!= numLEDs) begun = false; 
+  if (!begun) 
+  {
+    setPin(p); 
+    updateLength(n);
   if(pin >= 0) {
     pinMode(pin, OUTPUT);
     digitalWrite(pin, LOW);
   }
   begun = true;
+  }
 }
 
 void Adafruit_NeoPixel::updateLength(uint16_t n) {

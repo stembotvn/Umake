@@ -44,17 +44,17 @@
     ext.setPWM = function(p,value){
         runPackage(82,short2array(typeof p=="number"?p:pin[p]),short2array(value));
     };
-    ext.setColor = function(pin,red,green,blue){
-        runPackage(8,pin, red,green,blue);
+    ext.setColor = function(p,red,green,blue){
+        runPackage(8,typeof p=="number"?p:pin[p],red,green,blue);
     };   
-    ext.setStrip = function(pin,max,location,red,green,blue){
-        runPackage(125,pin,max,ledIndex=="all"?0:ledIndex, red,green,blue);
+    ext.setStrip = function(p,max,ledIndex,red,green,blue){
+        runPackage(125,typeof p=="number"?p:pin[p],max,ledIndex=="all"?0:ledIndex, red,green,blue);
     };
-    ext.playNote = function(pin,tone,beat){
-        runPackage(34,pin,short2array(typeof tone=="number"?tone:tones[tone]),short2array(typeof beat=="number"?beat:beats[beat]));
+    ext.playNote = function(p,tone,beat){
+        runPackage(34,typeof p=="number"?p:pin[p],short2array(typeof tone=="number"?tone:tones[tone]),short2array(typeof beat=="number"?beat:beats[beat]));
     };  
-    ext.playTone = function(pin,tone,beat){
-        runPackage(126,pin,short2array(typeof tone=="number"?tone:tones[tone]));
+    ext.playTone = function(p,tone){
+        runPackage(126,typeof p=="number"?p:pin[p],short2array(typeof tone=="number"?tone:tones[tone]));
     };  
     //ext.LCDprint = function(rows,pos,strings){
     //    runPackage(66,short2array(typeof rows=="number"?rows:row[rows]),short2array(pos),)
@@ -137,7 +137,7 @@
     };
     ext.getUSdistance = function(nextID,trig,echo){
         var deviceId = 36;
-        getPackage(nextID,deviceId,trig,echo);
+        getPackage(nextID,deviceId,typeof trig=="number"?trig:pin[trig],typeof echo=="number"?echo:pin[echo]);
     }
 
      ext.getCenterLine = function(nextID){
@@ -162,9 +162,9 @@
         var deviceId = 31;
         getPackage(nextID,deviceId,pin);
     };
-    ext.getIRremote = function(nextID,pin){
+    ext.getIRremote = function(nextID,p){
         var deviceId = 16;
-        getPackage(nextID,deviceId,pin);
+        getPackage(nextID,deviceId,typeof p=="number"?p:pin[p]);
 
     }
     //////////////////////////////////////////////
@@ -337,5 +337,5 @@
     }
 
     var descriptor = {};
-    ScratchExtensions.register('MakerKit', descriptor, ext, {type: 'serial'});
+    ScratchExtensions.register('UMake', descriptor, ext, {type: 'serial'});
 })({});
