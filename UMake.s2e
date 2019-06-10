@@ -124,7 +124,7 @@
         ],
                
         ["w",
-		    "Set RGB LED Color at pin %d.pins (Red: %n   Green: %n  Blue: %n )", "setColor","D7", 255, 0, 0,
+		    "Set RGB LED Color at pin %d.pin (Red: %n   Green: %n  Blue: %n )", "setColor","D7", 255, 0, 0,
 		    {
                 "encode":"{d0}{d1}{d2}{d3}",
                 "setup":"",
@@ -136,13 +136,13 @@
         ],
 
         ["w",
-		    "Set RGB LED Strip at pin %d.pins LEDs total %n  at location %d.LEDindex (Red: %n   Green: %n  Blue: %n )","setStrip","D7",8,1,  255, 0, 0,
+		    "Set RGB LED Strip at pin %d.pin LEDs total %n  at location %d.LEDindex (Red: %n   Green: %n  Blue: %n )","setStrip","D7",8,1,  255, 0, 0,
 		    {
                 "encode":"{d0}{d1}{d2}{d3}{d4}{d5}",
                 "setup":"",
 		        "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
 			    "def":"MakerKit Umake;\n",
-			    "work":"Umake.setStrip({0},{1},{2},{3},{d4},{d5});\n",
+			    "work":"Umake.setStrip({0},{1},{2},{3},{4},{5});\n",
 		        "loop":""
             }
         ],
