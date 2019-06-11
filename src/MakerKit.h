@@ -82,6 +82,7 @@ public:
     pinMode(pin,INPUT);
     return digitalRead(pin);
     }
+
     bool buttonPressed(int pin);
     bool readMicroswitch(int pin);
     int getGasSensor(int pin);

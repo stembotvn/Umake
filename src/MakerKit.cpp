@@ -321,34 +321,34 @@ void MakerKit::setPWM(int pin, int value)
 
 int MakerKit::leftSensor()
 {
-    pinMode(lineSensor_enable, OUTPUT);
+   // pinMode(lineSensor_enable, OUTPUT);
     int value;
-    digitalWrite(lineSensor_enable,HIGH);
-    value = analogRead(leftline_pin);
-    digitalWrite(lineSensor_enable, LOW);
-    pinMode(lineSensor_enable, INPUT);
+ //   digitalWrite(lineSensor_enable,HIGH);
+    value = analogRead(0);
+  //  digitalWrite(lineSensor_enable, LOW);
+   // pinMode(lineSensor_enable, INPUT);
 
     return value;
 }
 int MakerKit::rightSensor()
 {
-    pinMode(lineSensor_enable, OUTPUT);
+   // pinMode(lineSensor_enable, OUTPUT);
     int value;
-    digitalWrite(lineSensor_enable,HIGH);
-    value = analogRead(rightline_pin);
-    digitalWrite(lineSensor_enable, LOW);
-    pinMode(lineSensor_enable, INPUT);
+ //   digitalWrite(lineSensor_enable,HIGH);
+    value = analogRead(2);
+ //   digitalWrite(lineSensor_enable, LOW);
+ //   pinMode(lineSensor_enable, INPUT);
 
     return value;
 }
 int MakerKit::centerSensor()
 {
-    pinMode(lineSensor_enable, OUTPUT);
+ //   pinMode(lineSensor_enable, OUTPUT);
     int value;
-    digitalWrite(lineSensor_enable, HIGH);
-    value = analogRead(centerline_pin);
-    digitalWrite(lineSensor_enable, LOW);
-    pinMode(lineSensor_enable, INPUT);
+////    digitalWrite(lineSensor_enable, HIGH);
+    value = analogRead(1);
+ //   digitalWrite(lineSensor_enable, LOW);
+  //  pinMode(lineSensor_enable, INPUT);
 
     return value;
 }
