@@ -9,9 +9,9 @@
     var servo = {"D2":2,"D3":3,"D4":4,"D5":5,"D6":6,"D7":7,"D8":8,"D9":9,"D10":10,"D11":11,"D12":12};
     var pinA = {"A0":14,"A1":15,"A2":16,"A3":17};
     var levels = {HIGH:1,LOW:0};
-    var tones ={"C4":262,"D4":294,"E4":330,"F4":349,"G4":392,"A4":440,"B4":494,
-            "C5":523,"D5":587,"E5":659,"F5":698,"G5":784,"A5":880,"B5":988,
-            "C6":1047};
+    var tones = {"DO":1047,"RE":1175,"MI":1319,"FA":1397,"SOL":1568,"LA":1760,"SI":1976,
+            "DO2":2093,"RE2":2349,"MI2":2637,"FA2":2794,"SOL2":3136,"LA2":3520,"SI2":3951,
+            "DO3":4186};
     var beats = {"Half":500,"Quarter":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0};
 
     ext.resetAll = function(){};
@@ -19,8 +19,8 @@
     ext.runArduino = function(){
         responseValue();
     };
-    ext.runDigital = function(pin,level) {
-        runPackage(30,pin,typeof level=="string"?levels[level]:new Number(level));
+    ext.runDigital = function(p,level) {
+        runPackage(127,typeof p=="number"?p:pin[p],typeof level=="string"?levels[level]:new Number(level));
     };
     //////////////////////////////////////////////
     ext.setMotor = function(M,speed){
@@ -154,19 +154,28 @@
         getPackage(nextID,deviceId);
     };
 
-    ext.getDigital = function(nextID,pin){
-        var deviceId = 30;
-        getPackage(nextID,deviceId,pin);
+    ext.getDigital = function(nextID,p){
+        var deviceId = 104;
+        getPackage(nextID,deviceId,typeof p=="number"?p:pin[p]);
     };
-    ext.getAnalog = function(nextID,pin) {
+    ext.getAnalog = function(nextID,p) {
         var deviceId = 31;
-        getPackage(nextID,deviceId,pin);
+        getPackage(nextID,deviceId,typeof p=="number"?p:pinA[p]);
     };
     ext.getIRremote = function(nextID,p){
         var deviceId = 16;
         getPackage(nextID,deviceId,typeof p=="number"?p:pin[p]);
 
     }
+    ext.readPIR= function(nextID,p){
+        var deviceId = 15;
+        getPackage(nextID,deviceId,typeof p=="number"?p:pin[p]);
+
+    }
+    ext.getSingleLine = function(nextID,p) {
+        var deviceId = 84;
+        getPackage(nextID,deviceId,typeof p=="number"?p:pinA[p]);
+    };
     //////////////////////////////////////////////
     function sendPackage(argList, type){
         var bytes = [0xff, 0x55, 0, 0, type];

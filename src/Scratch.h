@@ -74,7 +74,7 @@ Define of ID function for Scratch interface
 #define CENTERLINE 101
 #define RIGHTLINE 102
 #define LEFTLINE 103
-
+#define DIGITALIN 104
 ////////////////////////
 #define STOP 120
 #define FORWARD 121
@@ -84,6 +84,7 @@ Define of ID function for Scratch interface
 
 #define RGBSTRIP 125
 #define PLAYTONE 126
+#define DIGITALOUT 127  
 /////////////////////////
 
 #define GET 1

@@ -19,6 +19,12 @@ void MakerKit::setLED(int pin, int status)
     else
         digitalWrite(pin, LOW);
 }
+
+void MakerKit::generateNote(int pin,int fr,int duration)
+{
+    Sound.setPin(pin);
+    Sound._playNote(fr,duration);
+}
 bool MakerKit::buttonPressed(int pin)
 {
     pinMode(pin, INPUT);
@@ -347,6 +353,13 @@ int MakerKit::centerSensor()
     return value;
 }
 
+int MakerKit::getLineSensor(int _pin){
+    int raw = analogRead(_pin);
+   // int percent = map(raw,0,1023,100,0);
+    return raw; 
+
+}
+
 int MakerKit::readIRdistance(int pin)
 {
     pinMode(pin,INPUT);
@@ -387,19 +400,23 @@ void MakerKit::enableIR(int receiverPin){
     }
 }
 
-long MakerKit::readIR(){
-    long IRcode; 
+unsigned long MakerKit::readIR(){
+    unsigned long IRcode; 
     if (irrecv.decode(&results))
-    {
+    {    
+        IRcode = results.value;
+        if (IRcode != 0xFFFFFFFF) lastIRcode = IRcode;
+        else IRcode = lastIRcode; 
         //Serial.println(results.value, HEX);
         delay(200);
         irrecv.resume();
-        IRcode = results.value;
        // results.value = 0;
         return IRcode;
 
     }
     else return 0;
+  //return results.value;
+
 }
 /////////////////////////////////////
 
@@ -547,9 +564,9 @@ void MakerKit::parseData()
 }
 void MakerKit::writeSerial()
 {
-    for(int i=0; i<ind+1; i++){
+    for(int i=0; i<ind; i++){
         Serial.write(serial_buf[i]);
-        delayMicroseconds(100);
+        //delayMicroseconds(100);
     }
     clearBuffer(buffer,sizeof(buffer));
     clearBuffer(serial_buf,sizeof(serial_buf));
@@ -626,6 +643,7 @@ void MakerKit::runFunction(int device)
         int speed = readBuffer(6);
         turnLeft(speed);
         }break;
+
         case TURNRIGHT: {
         int speed = readBuffer(6);
         turnRight(speed);
@@ -635,10 +653,10 @@ void MakerKit::runFunction(int device)
         stop();
         } break;
        
-        case DIGITAL:{
+        case DIGITALOUT:{
         int pin = readBuffer(6);        
         pinMode(pin,OUTPUT);
-        int v = readBuffer(7);
+        byte v = readBuffer(7);
         digitalWrite(pin,v);
        }
        break;
@@ -779,7 +797,7 @@ void MakerKit::readSensors(int device)
         }
         break;
 
-       case  DIGITAL:{
+       case  DIGITALIN:{
        int pin = readBuffer(6);
         pinMode(pin,INPUT);
        sendFloat(digitalRead(pin));
@@ -787,8 +805,8 @@ void MakerKit::readSensors(int device)
         break;
         case  ANALOG:{
         int pin = readBuffer(6);
-        pinMode(pin,INPUT);
-         sendFloat(analogRead(pin));
+        //pinMode(pin,INPUT);
+         sendShort(analogRead(pin));
          }
          break;
          
@@ -801,10 +819,24 @@ void MakerKit::readSensors(int device)
          break;
          case INFRARED:{
           int pin = readBuffer(6);
-          sendDouble(readIRremote(pin)) ;
+          sendFloat(readIRremote(pin)) ;
          }
          break;
+
+         case PIRMOTION:{
+          int pin = readBuffer(6);
+          sendFloat(readPIR(pin)) ;
+         }
+         break;
+
+         case LINESINGLE: {
+              int pin = readBuffer(6);
+          sendShort(getLineSensor(pin)) ; // return in % line reflected
+         }
         }
+
+      
+        
 }
 
 ///////////Private method for data package

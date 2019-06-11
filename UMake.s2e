@@ -1,6 +1,6 @@
 {	"extensionName": "Umake NEGENDO",
     "description": "UMake STEM kit",
-	"version": "1.1.2",
+	"version": "1.2.0",
 	"author": "NEGENDO",
 	"homepage": "https://negendo.com",
 	"sort": 0,
@@ -59,8 +59,8 @@
         "set digital %d.pin output as %d.digital",
         "runDigital", "D4", "HIGH",
 		{"encode":"{d0}{d1}",
-		"setup":"pinMode({0},OUTPUT);\n",
-		"inc":"","def":"","work":"digitalWrite({0},{1});\n","loop":""}
+		"setup":"",
+		"inc":"","def":"","work":"pinMode({0},OUTPUT);\ndigitalWrite({0},{1});\n","loop":""}
 		],   
 
 		["w", 
@@ -112,7 +112,7 @@
         ],
 
         ["w", 
-			"Set PWM pin %d.PWMpin value: %n ","setPWM","D3","100",
+			"Set PWM pin %d.PWMpin value: %n \% ","setPWM","D3","100",
 		    {
 			    "encode":"{d0}{d1}",
 			    "setup":"",
@@ -148,12 +148,12 @@
         ],
 
         ["w", 
-        "play Note pin %d.pin on note %d.notes beat %d.beats","playNote", "7", "C4","Half",
+        "play Note pin %d.pin on note %d.notes beat %d.beats","playNote", "D7", "DO","Half",
 		{"encode":"{d0}{s1}{s2}",
 		"setup":"",
 		"inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
 		"def":"MakerKit Umake;\n",
-		"work":"Umake.Sound._playnote({0},{1},{2}); \n",
+		"work":"Umake.generateNote({0},{1},{2}); \n",
 		"loop":""}],
 
 		
@@ -183,8 +183,8 @@
    		["-"],
         ["-"],
 
-        ["R", "read analog pin (A)%n","getAnalog","0",
-		{"encode":"{d0}","setup":"pinMode(A0+{0},INPUT);\n","inc":"","def":"","work":"analogRead(A0+{0})","loop":""}],
+        ["R", "read analog pin %d.pinA","getAnalog","A0",
+		{"encode":"{d0}","setup":"","inc":"","def":"","work":"analogRead({0})","loop":""}],
 
         ["R", 
 			"Get IR Distance pin: %d.pinA ","getIRdistance","A0",
@@ -306,16 +306,36 @@
 			    "loop":""
             }
         ],
-
+        ["R", 
+			"Line reflect sensor pin: %d.pinA ","getSingleLine","A0",
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.getLineSensor({0})",
+			    "loop":""
+            }
+        ],
+        ["R", 
+			"convert Float %n ","convertFloat",0,
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"",
+			    "def":"",
+			    "work":"float({0})",
+			    "loop":""
+            }
+        ],
+        
         
         ["-"],
         ["-"],
 
-        ["B", "read digital pin %n","getDigital","2",
-		{"encode":"{d0}","setup":"pinMode({0},INPUT);\n","inc":"","def":"","work":"digitalRead({0})","loop":""}],
+        ["B", "read digital pin %d.pin","getDigital","D2",
+		{"encode":"{d0}","setup":"","inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n","def":"MakerKit Umake;\n","work":"Umake.getDigital({0})","loop":""}],
 		
-
-
         ["B", 
 			"Button pressed pin: %d.pin ","buttonPressed","D2",
 		    {
@@ -363,7 +383,19 @@
 			    "loop":""
             }
         ],
-         ["-"],
+        ["B", 
+			"PIR motion sensor pin: %d.pin ","readPIR","D2",
+		    {
+			    "encode":"{d0}",
+			    "setup":"",
+			    "inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+			    "def":"MakerKit Umake;\n",
+			    "work":"Umake.readPIR({0})",
+			    "loop":""
+            }
+        ],
+
+        ["-"],
         ["-"],
 
 		["R", "Bluetooth available bytes", "BluetoothAvailable",
@@ -397,7 +429,7 @@
 		"pinA":["A0","A1","A2","A3"],
 		"PWMpin":["D3","D5","D6","D9","D10","D11"],
 		"LEDindex":["all",1,2,3,4,5,6,7,8],
-		"notes":["C4","D4","E4","F4","G4","A4","B4","C5","D5","E5","F5","G5","A5","B5","C6"],
+		"notes":["DO","RE","MI","FA","SOL","LA","SI","DO2","RE2","MI2","FA2","SOL2","LA2","SI2","DO3"],
 		"beats":["Half","Quarter","Eighth","Whole","Double","Zero"]
 	},
 
@@ -427,7 +459,13 @@
 		"LINE1":0,
   		"LINE2":1,
   		"HIGH":1,"LOW":0,
-  		"all":0
+  		"all":0,
+  		"DO":1047,"RE":1175,"MI":1319,"FA":1397,"SOL":1568,"LA":1760,"SI":1976,
+            "DO2":2093,"RE2":2349,"MI2":2637,"FA2":2794,"SOL2":3136,"LA2":3520,"SI2":3951,
+            "DO3":4186,
+        "Half":500,"Quarter":250,"Eighth":125,"Whole":1000,"Double":2000,"Zero":0    
+        
+
     },
 
     "translators":{
