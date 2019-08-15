@@ -77,6 +77,7 @@ public:
     void generateTone(int pin,int fr);
     void generateNote(int pin,int fr,int duration);
     void setPWM(int pin, int value);
+    void setBuzzer(int pin, int status);
 
     bool getDigital(int pin) {
     pinMode(pin,INPUT);

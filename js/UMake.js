@@ -41,6 +41,9 @@
     ext.disableServo = function(p){
         runPackage(65,short2array(typeof p=="number"?p:pin[p]));
     };
+    ext.setBuzzer = function(p,stt){
+        runPackage(68,short2array(typeof p=="number"?p:pin[p]),short2array(typeof stt=="number"?stt:status[stt]));
+    };
     ext.setPWM = function(p,value){
         runPackage(82,short2array(typeof p=="number"?p:pin[p]),short2array(value));
     };
