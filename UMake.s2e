@@ -1,6 +1,6 @@
 {	"extensionName": "Umake NEGENDO",
     "description": "UMake STEM kit",
-	"version": "1.2.2",
+	"version": "1.2.4",
 	"author": "NEGENDO",
 	"homepage": "https://negendo.com",
 	"sort": 0,
@@ -60,7 +60,10 @@
         "runDigital", "D4", "HIGH",
 		{"encode":"{d0}{d1}",
 		"setup":"",
-		"inc":"","def":"","work":"pinMode({0},OUTPUT);\ndigitalWrite({0},{1});\n","loop":""}
+		"inc":"#include \"MakerKit.h\"\n#include <Servo.h>\n",
+		"def":"MakerKit Umake;\n",
+		"work":"pinMode({0},OUTPUT);\ndigitalWrite({0},{1});\n",
+		"loop":""}
 		],   
 
 		["w", 

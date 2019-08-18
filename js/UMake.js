@@ -325,7 +325,7 @@
             tryNextDevice();
             return;
         }
-        device.set_receive_handler('MakerKit',function(data) {
+        device.set_receive_handler('UMake',function(data) {
             processData(data);
         });
     };
