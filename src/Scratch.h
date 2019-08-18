@@ -48,6 +48,7 @@ Define of ID function for Scratch interface
 #define DIS_SERVO 65
 #define LCD_PRINT 66
 #define LCD_CLEAR 67
+#define SET_BUZZER 68
 ///////GET////////
 #define BUTTONS 70
 #define SWITCH 71

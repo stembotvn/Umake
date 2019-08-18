@@ -22,8 +22,8 @@ void MakerKit::setLED(int pin, int status)
 
 void MakerKit::generateNote(int pin,int fr,int duration)
 {
-    Sound.setPin(pin);
-    Sound._playNote(fr,duration);
+    //Sound.setPin(pin);
+    //Sound._playNote(fr,duration);
 }
 bool MakerKit::buttonPressed(int pin)
 {
@@ -46,7 +46,7 @@ bool MakerKit::readMicroswitch(int pin)
 int MakerKit::getGasSensor(int pin)
 {
     int gas_value = analogRead(pin);
-    gas_value = map(gas_value,0,150,0,100);
+    gas_value = map(gas_value,0,1024,0,100);
     return gas_value;
 }
 bool MakerKit::readTouch(int pin)
@@ -61,7 +61,7 @@ bool MakerKit::readTouch(int pin)
 int MakerKit::getSoilMoisture(int pin)
 {
     int moisture_value = analogRead(pin);
-    moisture_value = map(moisture_value,0,300,0,100);
+    moisture_value = map(moisture_value,0,1024,0,100);
     return moisture_value;
 }
 int MakerKit::getSound(int pin)
@@ -317,6 +317,15 @@ void MakerKit::setPWM(int pin, int value)
     pinMode(pin, OUTPUT);
     int values = map(value,0,100,0,255);
     analogWrite(pin, values);
+}
+
+void MakerKit::setBuzzer(int pin, int status)
+{
+    pinMode(pin, OUTPUT);
+    if(status){
+        digitalWrite(pin, HIGH);
+    }
+    else digitalWrite(pin, LOW);
 }
 
 int MakerKit::leftSensor()
@@ -605,6 +614,12 @@ void MakerKit::runFunction(int device)
             int pin = readShort(6);
             int angle = readShort(8);
             setServo(pin,angle);
+            break;
+        }
+        case SET_BUZZER:{
+            int pin = readShort(6);
+            int status = readShort(8);
+            setBuzzer(pin,status);
             break;
         }
         case DIS_SERVO:{
