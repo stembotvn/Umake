@@ -43,11 +43,11 @@ bool MakerKit::readMicroswitch(int pin)
     else
         return 1;
 }
-int MakerKit::getGasSensor(int pin)
+float MakerKit::getGasSensor(int pin)
 {
     int gas_value = analogRead(pin);
     gas_value = map(gas_value,0,1024,0,100);
-    return gas_value;
+    return (float)gas_value;
 }
 bool MakerKit::readTouch(int pin)
 {
@@ -58,29 +58,29 @@ bool MakerKit::readTouch(int pin)
     else 
         return 0;
 }
-int MakerKit::getSoilMoisture(int pin)
+float MakerKit::getSoilMoisture(int pin)
 {
     int moisture_value = analogRead(pin);
     moisture_value = map(moisture_value,0,1024,0,100);
-    return moisture_value;
+    return (float)moisture_value;
 }
-int MakerKit::getSound(int pin)
+float MakerKit::getSound(int pin)
 {
     int sound_value = analogRead(pin);
-    return sound_value;
+    return (float)sound_value;
 }
-int MakerKit::getLight(int pin)
+float MakerKit::getLight(int pin)
 {
     int light_value = analogRead(pin);
     light_value = map(light_value,0,1024,0,100);
-    return light_value;
+    return (float)light_value;
 }
 bool MakerKit::readVibration(int pin)
 {
     int vib_value = digitalRead(pin);
     return vib_value;
 }
-int MakerKit::getAcceleromenterValue(int axis)
+float MakerKit::getAcceleromenterValue(int axis)
 {
     /*
         axis = 0 ---> axis X
@@ -94,13 +94,13 @@ int MakerKit::getAcceleromenterValue(int axis)
         axis_value = analogRead(A1);
     else if(axis ==2)
         axis_value = analogRead(A2);
-    return axis_value;
+    return (float)axis_value;
 }
-int MakerKit::getPotentiomenterLocation(int pin)
+float MakerKit::getPotentiomenterLocation(int pin)
 {
     int location = analogRead(pin);
     location = map(location,0,1024,0,100);
-    return location;
+    return (float)location;
 }
 float MakerKit::getTemperature(int pin)
 {
