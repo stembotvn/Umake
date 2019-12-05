@@ -116,7 +116,7 @@ float MakerKit::getHumidity(int pin)
 }
 float MakerKit::getUSdistance(int trig,int echo)
 {
-    US.begin(trig,echo,3500);
+    US.begin(trig,echo,18000);
     return US.Ranging(CM);
 }
 

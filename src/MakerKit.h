@@ -80,7 +80,7 @@ public:
     void setBuzzer(int pin, int status);
 
     bool getDigital(int pin) {
-    pinMode(pin,INPUT);
+    pinMode(pin,INPUT_PULLUP);
     return digitalRead(pin);
     }
 
